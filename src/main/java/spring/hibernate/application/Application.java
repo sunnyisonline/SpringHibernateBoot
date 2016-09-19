@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"spring.hibernate"})
+@ComponentScan(basePackages = { "spring.hibernate" })
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

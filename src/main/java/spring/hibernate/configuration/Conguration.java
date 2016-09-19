@@ -1,6 +1,10 @@
 package spring.hibernate.configuration;
 
+import java.util.Date;
 import java.util.Properties;
+import java.util.Timer;
+
+import javax.annotation.PostConstruct;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.MySQL5Dialect;
@@ -15,6 +19,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import custom.schedular.timer.CustomTimer;
 import spring.hibernate.beans.Employee;
 
 @Configuration
@@ -33,6 +38,12 @@ public class Conguration {
 
 	@Value("${mysql.password}")
 	private String password;
+
+	@PostConstruct
+	public void callTimer() {
+		Timer timer = new Timer();
+		timer.schedule(new CustomTimer(), new Date(), 1000);
+	}
 
 	@Bean
 	public DriverManagerDataSource driverManagerDataSource() {
