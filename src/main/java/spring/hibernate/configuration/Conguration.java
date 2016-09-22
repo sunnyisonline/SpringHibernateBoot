@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Timer;
 
-import javax.annotation.PostConstruct;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.MySQL5Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,11 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
-import custom.schedular.timer.CustomTimer;
 import spring.hibernate.beans.Employee;
+import custom.schedular.timer.CustomTimer;
 
 @Configuration
 @PropertySource(value = "application.properties")
@@ -39,7 +39,7 @@ public class Conguration {
 	@Value("${mysql.password}")
 	private String password;
 
-	@PostConstruct
+	// @PostConstruct (To Enable Custom Timer, un-comment that.)
 	public void callTimer() {
 		Timer timer = new Timer();
 		timer.schedule(new CustomTimer(), new Date(), 1000);
