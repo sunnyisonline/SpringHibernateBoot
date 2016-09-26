@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.hibernate.beans.Employee;
+import spring.hibernate.beans.UserMaster;
 import spring.hibernate.service.SpringHibernateService;
 
 @Controller
@@ -55,5 +56,14 @@ public class EmployeeController {
 		System.out.println("employeeId - " + employeeId);
 		System.out.println("employeeName - " + employeeName);
 		springHibernateService.delete(new Employee(employeeId, employeeName));
+	}
+	
+	@RequestMapping(value = "/insertUser/{userName}/{password}/{role}", method = RequestMethod.GET)
+	@ResponseBody
+	public void insertUser(@PathVariable String userName, @PathVariable String password, @PathVariable String role) {
+		System.out.println("userName - " + userName);
+		System.out.println("password - " + password);
+		System.out.println("role - " + role);
+		springHibernateService.insert(new UserMaster(userName, password, role));
 	}
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,10 +24,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
+import spring.hibernate.service.impl.CustomUserDetailService;
+
 //@EnableWebSecurity (Not needed for Spring Boot, as its already initialized)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @Component
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	@Qualifier("customUserDetailService")
+	CustomUserDetailService customUserDetailService;
 
 	@Autowired
 	public void configureGlobal(
@@ -34,8 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			throws Exception {
 		System.out.println("SRI .....");
 		System.out.println("Setting Authentication Manager Builder ...");
-		authenticationManagerBuilder.inMemoryAuthentication()
-				.withUser("sunny.k").password("sunny.k").roles("ADMIN");
+		// authenticationManagerBuilder.inMemoryAuthentication()
+		// .withUser("sunny.k").password("sunny.k").roles("ADMIN");
+		authenticationManagerBuilder
+				.userDetailsService(customUserDetailService);
 	}
 
 	@Override
@@ -58,6 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrfTokenRepository(csrfTokenRepository()).and();
 		httpSecurity = httpSecurity.addFilterAfter(csrfHeaderFilter(),
 				CsrfFilter.class);
+		httpSecurity = httpSecurity.sessionManagement().maximumSessions(1)
+				.expiredUrl("/login?expired").and().and();
 	}
 
 	private Filter csrfHeaderFilter() {

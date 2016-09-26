@@ -62,8 +62,8 @@ public class Conguration {
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-		// localSessionFactoryBean.setPackagesToScan("spring.hibernate.beans");
-		localSessionFactoryBean.setAnnotatedClasses(Employee.class);
+		 localSessionFactoryBean.setPackagesToScan("spring.hibernate.beans");
+//		localSessionFactoryBean.setAnnotatedClasses(Employee.class);
 		localSessionFactoryBean.setDataSource(driverManagerDataSource());
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.put("hibernate.dialect", MySQL5Dialect.class);
